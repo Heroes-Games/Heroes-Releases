@@ -6,6 +6,7 @@ SOURCE_TOKEN reads only the calling game; DISTRIBUTION_TOKEN writes Heroes-Relea
 import argparse
 import base64
 import hashlib
+import http.client
 import json
 import os
 import re
@@ -30,6 +31,12 @@ MAX_ARCHIVE = 2 * 1024**3
 def require(condition, message):
     if not condition:
         raise ValueError(message)
+
+
+def transient(error):
+    if isinstance(error, urllib.error.HTTPError):
+        return error.code in (429, 500, 502, 503, 504)
+    return isinstance(error, (urllib.error.URLError, TimeoutError, ConnectionError, http.client.IncompleteRead))
 
 
 def version(value):
@@ -132,6 +139,15 @@ class GitHub:
         self.opener = urllib.request.build_opener(NoRedirect())
 
     def request(self, path, method='GET', body=None, missing=False):
+        for attempt in range(4):
+            try:
+                return self._request(path, method, body, missing)
+            except (urllib.error.URLError, TimeoutError, ConnectionError, http.client.IncompleteRead) as exc:
+                if method != 'GET' or not transient(exc) or attempt == 3:
+                    raise
+                time.sleep(2**attempt)
+
+    def _request(self, path, method='GET', body=None, missing=False):
         url = 'https://api.github.com' + path
         data = json.dumps(body).encode() if body is not None else None
         try:
@@ -164,6 +180,17 @@ class GitHub:
         raise ValueError('Too many release pages')
 
     def download(self, repo, item, path, maximum):
+        require(not Path(path).exists(), 'Refusing to overwrite a download')
+        for attempt in range(4):
+            try:
+                return self._download(repo, item, path, maximum)
+            except (urllib.error.URLError, TimeoutError, ConnectionError, http.client.IncompleteRead) as exc:
+                if not transient(exc) or attempt == 3:
+                    raise
+                Path(path).unlink(missing_ok=True)
+                time.sleep(2**attempt)
+
+    def _download(self, repo, item, path, maximum):
         require(type(item['size']) is int and 0 < item['size'] <= maximum, 'Download exceeds size limit')
         url = f"https://api.github.com/repos/{repo}/releases/assets/{item['id']}"
         request = self.make_request(url, accept='application/octet-stream')
@@ -293,3 +320,5 @@ if __name__ == '__main__':
     except urllib.error.HTTPError as error:
         # Avoid exposing request headers, signed URLs or tokens in CI logs.
         raise SystemExit(f'GitHub request failed (HTTP {error.code}); catalog retained. Retry the workflow.') from None
+    except (urllib.error.URLError, TimeoutError, ConnectionError, http.client.IncompleteRead):
+        raise SystemExit('Network transfer failed after retries; catalog retained. Retry the workflow.') from None

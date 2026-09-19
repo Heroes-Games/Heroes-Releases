@@ -107,6 +107,29 @@ class CatalogTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             GitHub('test-token').make_request('https://release-assets.githubusercontent.com/file')
 
+    def test_network_retry_discards_partial_download(self):
+        api = GitHub(None)
+        calls = []
+        def transfer(repo, item, path, maximum):
+            self.assertFalse(Path(path).exists())
+            calls.append(1)
+            Path(path).write_bytes(b'complete' if len(calls) > 1 else b'partial')
+            if len(calls) == 1:
+                raise urllib.error.URLError(ConnectionResetError('fixture'))
+        api._download = transfer
+        with tempfile.TemporaryDirectory() as temp, patch('sync_catalog.time.sleep'):
+            path = Path(temp)/'download.zip'
+            api.download('repo', {}, path, 100)
+            self.assertEqual(path.read_bytes(), b'complete')
+            self.assertEqual(len(calls), 2)
+
+    def test_download_integrity_failure_not_retried(self):
+        api = GitHub(None)
+        with tempfile.TemporaryDirectory() as temp, patch.object(api, '_download', side_effect=ValueError('checksum')) as transfer:
+            with self.assertRaisesRegex(ValueError, 'checksum'):
+                api.download('repo', {}, Path(temp)/'download.zip', 100)
+            self.assertEqual(transfer.call_count, 1)
+
     def test_release_paging_does_not_skip_older_publication_of_newer_version(self):
         api = GitHub(None)
         api.request = lambda path: [release('0.1.0')]*100 if 'page=1' in path.split('&')[-1] else [release('0.26.3')]
