@@ -1,6 +1,6 @@
 # Heroes — Téléchargements Windows
 
-Le client Heroes réunit BrawlHeroes, MoveHeroes et RogueHeroes. [Télécharge le client sur le site Heroes](https://heroes-website-beta.vercel.app/telecharger) après connexion avec Discord. Extrais toute l’archive, ouvre `HeroesClient/HeroesClient.exe`, connecte-toi puis sélectionne un jeu et clique sur **Installer**.
+Le client Heroes réunit BrawlHeroes, MoveHeroes, RogueHeroes, FighterHeroes et LeagueOfHeroes. [Télécharge le client sur le site Heroes](https://heroes-website-beta.vercel.app/telecharger) après connexion avec Discord. Ouvre l’installateur, connecte-toi puis sélectionne un jeu et clique sur **Installer**.
 
 Les jeux sont des prototypes en développement. Le client propose leurs mises à jour à la demande. Les jeux installés restent accessibles hors connexion.
 
@@ -23,3 +23,24 @@ Le lecteur du dépôt source est le `GITHUB_TOKEN` temporaire du jeu, limité à
 Les scripts publics sous `tools/` contiennent seulement l’automatisation et ses tests, sans code des jeux. Les anciennes URL `Nayir/Heroes-Releases` sont conservées dans le catalogue pour les clients déjà distribués ; ne pas recréer ce dépôt, car cela casserait les redirections.
 
 Validation locale : `python -m unittest discover -s tools -v`.
+
+## FighterHeroes et LeagueOfHeroes
+
+Ces deux jeux utilisent `catalog-additional.json`, lu avec le catalogue existant
+par Heroes Client 0.5.0 et les versions suivantes. Le fichier `catalog.json` conserve
+ses trois jeux : les anciens clients refusent les identifiants qu’ils ne connaissent
+pas. Les workflows existants continuent à y publier leurs mises à jour.
+
+Pour une nouvelle version des deux jeux supplémentaires, préparer le joueur complet
+avec `Tools/Prepare-AdditionalGame.ps1` dans Heroes Client. Le script conserve la
+provenance du build testé, ne copie que le runtime Unity et vérifie le joueur extrait
+du ZIP avant de produire le manifeste. Puis lancer :
+
+```sh
+python tools/publish_additional.py --publish <dossier-release-vérifiée>
+```
+
+Le publieur vérifie le manifeste et le ZIP, publie une archive immuable et son
+SHA-256, retélécharge les octets publics, puis fusionne le catalogue complémentaire.
+Les versions plus récentes sont conservées et un même numéro ne peut pas changer
+de contenu. Les sources des jeux ne sont pas publiées par cet outil.
