@@ -11,10 +11,10 @@
     },
     {
       "id": "move",
-      "version": "0.13.1",
-      "url": "https://github.com/Nayir/Heroes-Releases/releases/download/move-v0.13.1/MoveHeroesX-v0.13.1-Windows-x64.zip",
-      "sha256": "f08c9c5f0aa7c9cdf583ce89281a1ab4ee9326615d0e69e6cadf9e7258e7efc4",
-      "size": 83651639,
+      "version": "0.15.2",
+      "url": "https://github.com/Nayir/Heroes-Releases/releases/download/move-v0.15.2/MoveHeroesX-v0.15.2-Windows-x64.zip",
+      "sha256": "d0bfefbb599cbb50055f6cd5171dd765abf9c4eb191bb9f1571a0477b05ab05d",
+      "size": 83600142,
       "executable": "MoveHeroesX/MoveHeroesX.exe"
     },
     {
