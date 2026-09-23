@@ -3,10 +3,10 @@
   "games": [
     {
       "id": "fighter",
-      "version": "0.1.4",
-      "url": "https://github.com/Nayir/Heroes-Releases/releases/download/fighter-v0.1.4/FighterHeroes-v0.1.4-Windows-x64.zip",
-      "sha256": "a8627df0c5b78cd9d7d97d84b36964ea59a1687220c873036520e960058776c0",
-      "size": 61118080,
+      "version": "0.2.0",
+      "url": "https://github.com/Nayir/Heroes-Releases/releases/download/fighter-v0.2.0/FighterHeroes-v0.2.0-Windows-x64.zip",
+      "sha256": "e28d196098fbfec184d35eebb8ab2690b0887044fa00eb6d7986ea9091ac7353",
+      "size": 64697763,
       "executable": "FighterHeroes/FighterHeroes.exe"
     },
     {
