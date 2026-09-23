@@ -106,9 +106,10 @@ def publish(roots):
         if release is None:
             details = ('Duel sans armes, entraînement et duel local. Esquive, parade et attaques chargées.' if game[0] == 'fighter'
                        else 'Neuf champions, quatre compétences chacun, entraînement, duel contre le bot et duel local.')
+            network = (' Duels privés en ligne, revanche et déconnexion vérifiés.' if manifest.get('onlineVerified') else '')
             release = api.request(f'/repos/{DESTINATION}/releases', 'POST', {
                 'tag_name': tag, 'target_commitish': 'main', 'name': f"{game[1]} {manifest['version']}", 'draft': True, 'prerelease': False,
-                'body': f"{details}\n\nPrototype Windows x64. Première distribution depuis le client Heroes ; le jeu peut encore afficher le suffixe local de son build d’origine. Aucun mode réseau.\n\nTests Core réussis et {manifest['integrationChecks']} contrôles réussis dans le joueur extrait du ZIP.\n\nConserver l’exécutable avec toutes ses DLL et ses dossiers. Unity n’est pas requis.\n\nSHA-256 : `{manifest['sha256']}`"})
+                'body': f"{details}\n\nWindows x64. Interface commune Heroes : modes, préparation, réglages, pause et résultats. Navigation souris, clavier et manette.{network}\n\nTests Core réussis et {manifest['integrationChecks']} contrôles réussis dans le joueur extrait du ZIP.\n\nConserver l’exécutable avec toutes ses DLL et ses dossiers. Unity n’est pas requis.\n\nSHA-256 : `{manifest['sha256']}`"})
         require(release['tag_name'] == tag and not release['prerelease'], 'Unexpected release')
         for path in (archive, checksum):
             api.upload(DESTINATION, release, path)
