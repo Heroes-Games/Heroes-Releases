@@ -3,10 +3,10 @@
   "games": [
     {
       "id": "brawl",
-      "version": "0.38.1",
-      "url": "https://github.com/Nayir/Heroes-Releases/releases/download/brawl-v0.38.1/BrawlHeroesX-v0.38.1-Windows-x64.zip",
-      "sha256": "c4fc96365d5b9b689eeeed1446b0bffb0a8709cf35de92d147d5e7de03d8cb7b",
-      "size": 87832411,
+      "version": "0.38.2",
+      "url": "https://github.com/Nayir/Heroes-Releases/releases/download/brawl-v0.38.2/BrawlHeroesX-v0.38.2-Windows-x64.zip",
+      "sha256": "b27211a196a360d8266213d1990ede833769cefab1869d747f92126ed31198f9",
+      "size": 87832803,
       "executable": "BrawlHeroesX/BrawlHeroesX.exe"
     },
     {
