@@ -11,10 +11,10 @@
     },
     {
       "id": "league",
-      "version": "0.52.0",
-      "url": "https://github.com/Nayir/Heroes-Releases/releases/download/league-v0.52.0/LeagueOfHeroes-v0.52.0-Windows-x64.zip",
-      "sha256": "90472eec69132a7e8b04d673b935ef69b12e25ccc5a3039be8653efce7c51c36",
-      "size": 618888605,
+      "version": "0.53.1",
+      "url": "https://github.com/Nayir/Heroes-Releases/releases/download/league-v0.53.1/LeagueOfHeroes-v0.53.1-Windows-x64.zip",
+      "sha256": "e1ab0416211e1281a999154f0cd9d6c35290a60a941938f0bbd3d26c43023f1d",
+      "size": 688734407,
       "executable": "LeagueOfHeroes/LeagueOfHeroes.exe"
     }
   ]
