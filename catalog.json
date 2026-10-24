@@ -19,10 +19,10 @@
     },
     {
       "id": "rogue",
-      "version": "0.11.0",
-      "url": "https://github.com/Nayir/Heroes-Releases/releases/download/rogue-v0.11.0/RogueHeroes-v0.11.0-Windows-x64.zip",
-      "sha256": "791099c66e7f5e31ab223879c86c71140a92d9cd31f9884ee552e65ba39a5891",
-      "size": 111632163,
+      "version": "0.11.1",
+      "url": "https://github.com/Nayir/Heroes-Releases/releases/download/rogue-v0.11.1/RogueHeroes-v0.11.1-Windows-x64.zip",
+      "sha256": "32c2676122d0d3245d6c3353e8a957f0911fd4f4ce6e87109c091e68bf05fde5",
+      "size": 111632707,
       "executable": "RogueHeroes/RogueHeroes.exe"
     }
   ]
